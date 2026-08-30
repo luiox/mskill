@@ -31,3 +31,9 @@ sync.cmd --remove   # 摘除本仓库创建的 junction
 | skill | 用途 |
 |---|---|
 | `stm32/stm32cubemx` | .ioc 手写规范 + CubeMX headless（-q）生成管线 + 生成物进 git 边界（F103ZET6/精英板/xmake 绑定版） |
+
+## meta skill 一览
+
+| skill | 用途 |
+|---|---|
+| `meta/local-software-use` | Windows 本机软件定位与安装纪律：Everything CLI (es) 全盘秒搜代替递归遍历（独立传参 / `!path:` / `-w` 全词等实测坑）+ PATH 安全写法（禁 setx 防静默截断）+ 小工具装用户目录、大型软件先问装哪 + 常用软件→exe 映射表 |

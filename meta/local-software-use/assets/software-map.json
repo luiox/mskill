@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "_comment": "通用软件到 exe 名的映射，供 AI 与 scripts/find-software.ps1 使用。只含通用知识，严禁写入任何具体机器的路径或用户名。",
+  "noise_paths": ["Prefetch", "WER", "$Recycle.Bin"],
+  "builtin_windows_get_command_first": [
+    "curl.exe", "ssh.exe", "scp.exe", "tar.exe",
+    "powershell.exe", "pwsh.exe", "wsl.exe"
+  ],
+  "tools": [
+    {
+      "name": "7-zip",
+      "aliases": ["7zip", "7z", "压缩", "压缩软件"],
+      "executables": ["7z.exe", "7zFM.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "7z.exe 是 CLI；7zFM.exe 是 GUI；7za.exe 为独立精简版。7z.exe 裸跑打印含版本的横幅。"
+    },
+    {
+      "name": "winrar",
+      "aliases": ["rar"],
+      "executables": ["WinRAR.exe", "Rar.exe", "UnRAR.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "WinRAR.exe 是 GUI；Rar.exe/UnRAR.exe 是 CLI，在安装目录内，常不在 PATH。"
+    },
+    {
+      "name": "bandizip",
+      "aliases": [],
+      "executables": ["Bandizip.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "GUI 为主。"
+    },
+    {
+      "name": "jdk",
+      "aliases": ["java", "jre", "javase"],
+      "executables": ["java.exe", "javac.exe", "javaw.exe"],
+      "version_args": ["-version"],
+      "version_stderr": true,
+      "notes": "有 javac.exe 才是 JDK，只有 java.exe/javaw.exe 是 JRE。注意捆绑 JRE 陷阱：MATLAB、Altair、ANSYS、Android Studio、Gradle 等自带 java.exe，命中不代表装了独立 JDK。JAVA_HOME = java.exe 所在 bin 的上一级。"
+    },
+    {
+      "name": "python",
+      "aliases": ["py", "cpython"],
+      "executables": ["python.exe", "pythonw.exe", "py.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "多版本共存常见；商店版在 WindowsApps（app 执行别名）；py.exe 是官方启动器，py -0p 列出全部已装版本。"
+    },
+    {
+      "name": "uv",
+      "aliases": ["uvx", "astral"],
+      "executables": ["uv.exe", "uvx.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "Python 包管理器，默认装在用户目录 .local\\bin 下。"
+    },
+    {
+      "name": "pip",
+      "aliases": [],
+      "executables": ["pip.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "跟随各 Python 环境，通常不必单独找。"
+    },
+    {
+      "name": "conda",
+      "aliases": ["mamba", "anaconda", "miniconda"],
+      "executables": ["conda.exe", "mamba.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "位于 conda 安装目录的 condabin 或 Scripts 下。"
+    },
+    {
+      "name": "nodejs",
+      "aliases": ["node", "npm", "npx"],
+      "executables": ["node.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "npm/npx 是 .cmd shim 不是 exe；pnpm.exe/yarn.cmd 同理。Get-Command npm 更直接。"
+    },
+    {
+      "name": "nvm-windows",
+      "aliases": ["nvm", "volta", "fnm"],
+      "executables": ["nvm.exe", "volta.exe", "fnm.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "Node 版本管理器，决定哪个 node.exe 生效。"
+    },
+    {
+      "name": "git",
+      "aliases": [],
+      "executables": ["git.exe", "git-bash.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "msvc",
+      "aliases": ["cl", "visualstudio", "visual studio", "vs"],
+      "executables": ["cl.exe"],
+      "version_args": [],
+      "version_stderr": true,
+      "notes": "cl.exe 不在 PATH，位于 VS 的 VC\\Tools\\MSVC\\<版本>\\bin\\Hostx64\\x64。定位 VS 用 vswhere.exe：& \"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\vswhere.exe\" -latest -property installationPath，之后配 vcvarsall.bat。"
+    },
+    {
+      "name": "mingw",
+      "aliases": ["gcc", "g++", "mingw32-make"],
+      "executables": ["gcc.exe", "g++.exe", "mingw32-make.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "llvm",
+      "aliases": ["clang", "clang++", "clangd"],
+      "executables": ["clang.exe", "clang++.exe", "clangd.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "cmake",
+      "aliases": [],
+      "executables": ["cmake.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "ninja",
+      "aliases": [],
+      "executables": ["ninja.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "xmake",
+      "aliases": [],
+      "executables": ["xmake.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "go",
+      "aliases": ["golang"],
+      "executables": ["go.exe"],
+      "version_args": ["version"],
+      "version_stderr": false,
+      "notes": "GOROOT = go.exe 所在目录的上一级（bin 结构）。"
+    },
+    {
+      "name": "rust",
+      "aliases": ["cargo", "rustc", "rustup"],
+      "executables": ["cargo.exe", "rustc.exe", "rustup.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "默认在用户目录 .cargo\\bin 下。"
+    },
+    {
+      "name": "maven",
+      "aliases": ["mvn"],
+      "executables": ["mvn.cmd"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "mvn 是 .cmd shim。"
+    },
+    {
+      "name": "gradle",
+      "aliases": [],
+      "executables": ["gradle.bat", "gradle.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "IDEA 下载的发行版在用户 .gradle\\wrapper 下，命中属正常。"
+    },
+    {
+      "name": "vscode",
+      "aliases": ["code", "visual studio code"],
+      "executables": ["Code.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "GUI 是 Code.exe；CLI 是 code.cmd，通常在用户 AppData\\Local\\Programs\\Microsoft VS Code\\bin。"
+    },
+    {
+      "name": "jetbrains",
+      "aliases": ["idea", "intellij", "pycharm", "clion", "webstorm", "goland", "toolbox"],
+      "executables": ["idea64.exe", "pycharm64.exe", "clion64.exe", "webstorm64.exe", "goland64.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "Toolbox 安装在用户 AppData\\Local\\JetBrains\\Toolbox\\apps，多版本并存命中多个属正常。"
+    },
+    {
+      "name": "notepad++",
+      "aliases": ["notepadpp"],
+      "executables": ["notepad++.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "neovim",
+      "aliases": ["nvim", "vim"],
+      "executables": ["nvim.exe", "vim.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "docker",
+      "aliases": ["dockerd"],
+      "executables": ["docker.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "ffmpeg",
+      "aliases": ["ffprobe"],
+      "executables": ["ffmpeg.exe", "ffprobe.exe"],
+      "version_args": ["-version"],
+      "version_stderr": false,
+      "notes": "常被剪辑类软件捆绑，注意判断是否独立安装。"
+    },
+    {
+      "name": "wget",
+      "aliases": [],
+      "executables": ["wget.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "postgresql",
+      "aliases": ["psql", "postgres"],
+      "executables": ["psql.exe", "postgres.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "mysql",
+      "aliases": ["mysqld"],
+      "executables": ["mysql.exe", "mysqld.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": ""
+    },
+    {
+      "name": "redis",
+      "aliases": [],
+      "executables": ["redis-server.exe", "redis-cli.exe"],
+      "version_args": ["--version"],
+      "version_stderr": false,
+      "notes": "Windows 移植版。"
+    },
+    {
+      "name": "everything",
+      "aliases": ["voidtools"],
+      "executables": ["Everything.exe", "es.exe"],
+      "version_args": [],
+      "version_stderr": false,
+      "notes": "Everything.exe 是索引服务/GUI，es.exe 是本技能用的 CLI。"
+    }
+  ]
+}
