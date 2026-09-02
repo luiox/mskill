@@ -1,6 +1,0 @@
-[submodule "vendor/embedded-development-skill"]
-	path = vendor/embedded-development-skill
-	url = https://github.com/Aidankong/embedded-development-skill
-[submodule "vendor/skill-stm32cubemx"]
-	path = vendor/skill-stm32cubemx
-	url = https://github.com/limpidautumn/skill-stm32cubemx

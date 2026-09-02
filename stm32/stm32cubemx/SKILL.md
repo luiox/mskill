@@ -1,22 +1,25 @@
 ---
 name: stm32cubemx
-description: "AI 操作 STM32CubeMX 的标准工作流：.ioc 手写/编辑规范、headless（-q 脚本）代码生成、生成物进 git 的边界、xmake/CMake 构建。当任务涉及 .ioc 文件、CubeMX 生成 Core/ 目录、MX_*_Init、USER CODE 区间、STM32 工程脚手架时使用。绑定本机环境（CubeMX 6.18.0-RC3 / STM32F103 精英板 / lab-stm32）。"
+description: "AI 操作 STM32CubeMX 的标准工作流：.ioc 手写/编辑规范、headless（-q 脚本）代码生成、生成物进 git 的边界、xmake/CMake 构建。当任务涉及 .ioc 文件、CubeMX 生成 Core/ 目录、MX_*_Init、USER CODE 区间、STM32 工程脚手架时使用。绑定项目（STM32F103 精英板 / lab-stm32），机器事实靠探测见环境一节。"
 ---
 
 # STM32CubeMX 工作流（本机环境绑定版）
 
-方法源自 Aidankong/embedded-development-skill 与 limpidautumn/skill-stm32cubemx（UM1718 知识库），原版在 `../vendor/`。本版差异：绑定本机路径、坑清单全部来自 lab-stm32 实测（2026-08），构建用 xmake 而非 CMake/Makefile。
+方法源自 Aidankong/embedded-development-skill 与 limpidautumn/skill-stm32cubemx（UM1718 知识库），链接见本仓库 README 参考清单（原版不进仓库，需要时浅克隆到临时目录读）。本版差异：绑定本机项目、坑清单全部来自 lab-stm32 实测（2026-08），构建用 xmake 而非 CMake/Makefile。
 
-## 环境绑定（本机事实）
+## 环境（机器事实靠探测，项目事实写死）
 
-| 项 | 值 |
-|---|---|
-| CubeMX | `D:\Program Files\STMicroelectronics\STM32Cube\STM32CubeMX\STM32CubeMX.exe`（6.18.0-RC3） |
-| 固件包 | `C:\Users\Canrad\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.7\`（本地已有 → generate 无需 login） |
-| 主力芯片 | STM32F103ZET6，LQFP144（正点原子精英板；LED0=PB5、LED1=PE5 低电平亮，BEEP=PB8，KEY0/1/2=PE4/3/2 上拉输入，WK_UP=PA0 下拉输入，USART1=PA9/PA10） |
-| ARM GCC | `D:/sdk/Arm GNU Toolchain arm-none-eabi/11.3 rel1`（xmake `--sdk=` 传入） |
-| 构建规则 | lab-stm32 `xmake/f1.lua`（自动注入 demo 的 Core/Src + Core/Inc） |
-| 生成脚本 | lab-stm32 `tools/cubemx_gen.bat <file.ioc>`（内部：写 -q 脚本 → 调 `tools/cubemx_run.bat`） |
+换机器/重装后先跑一遍探测，把实测结果写进本目录 `local.md`（git 已忽略，本 skill 专用），之后 AI 先读 local.md 再动手：
+
+| 项 | 探测方法 | 回退/缺省 |
+|---|---|---|
+| CubeMX exe | `es -n 5 -w STM32CubeMX.exe`（es 没装先按 meta/local-software-use 装） | 无，找不到就问用户 |
+| 固件包 | `es -n 5 path:STM32Cube STM32Cube_FW_F1` | `%USERPROFILE%\STM32Cube\Repository\STM32Cube_FW_F1_*`（本地已有 → generate 无需 login） |
+| ARM GCC | `Get-Command arm-none-eabi-gcc` | 没有 → `es -n 5 arm-none-eabi-gcc.exe`，把其 bin 目录以 xmake `--sdk=` 传入 |
+| lab-stm32 仓库 | `es -n 5 -w cubemx_gen.bat` | 找不到就问用户仓库位置 |
+| 构建规则/生成脚本 | lab-stm32 内 `xmake/f1.lua`（自动注入 demo 的 Core/Src + Core/Inc）、`tools/cubemx_gen.bat <file.ioc>`（内部：写 -q 脚本 → 调 `tools/cubemx_run.bat`） | 随 lab-stm32 仓库走 |
+
+项目事实（与机器无关，写死）：主力芯片 STM32F103ZET6，LQFP144（正点原子精英板；LED0=PB5、LED1=PE5 低电平亮，BEEP=PB8，KEY0/1/2=PE4/3/2 上拉输入，WK_UP=PA0 下拉输入，USART1=PA9/PA10）。
 
 ## 核心工作流
 
